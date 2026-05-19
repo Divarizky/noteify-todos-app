@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ApiService {
-    @GET("todos")
+    @GET("todos?_limit=3")
     suspend fun getNotes(): List<Note>
 }
 
