@@ -12,6 +12,9 @@ data class Note(
     @SerializedName("title")
     val title: String,
 
+    @SerializedName("description")
+    val description: String? = "",
+
     @SerializedName("completed")
     val completed: Boolean
 )

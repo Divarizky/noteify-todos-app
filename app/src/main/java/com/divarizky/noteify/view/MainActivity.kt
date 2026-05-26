@@ -61,9 +61,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showNoteFragment(note: Note?) {
-        val fragment = NoteFragment(note) { title, completed ->
-            if (note == null) viewModel.addNote(title, completed)
-            else viewModel.updateNote(note.copy(title = title, completed = completed)) // ← Edit
+        val fragment = NoteFragment(note) { title, description, completed ->
+            if (note == null) viewModel.addNote(title, description, completed)
+            else viewModel.updateNote(note.copy(title = title, description = description, completed = completed))
         }
         fragment.show(supportFragmentManager, "NoteFragment")
     }

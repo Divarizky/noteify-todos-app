@@ -35,10 +35,10 @@ class NoteViewModel : ViewModel() {
         }
     }
 
-    fun addNote(title: String, completed: Boolean) {
+    fun addNote(title: String, description: String, completed: Boolean) {
         val currentList = _notes.value?.toMutableList() ?: mutableListOf()
         val newId = (currentList.maxOfOrNull { it.id } ?: 0) + 1
-        currentList.add(0, Note(userId = 1, id = newId, title = title, completed = completed))
+        currentList.add(0, Note(userId = 1, id = newId, title = title, description = description, completed = completed))
         _notes.value = currentList
     }
 

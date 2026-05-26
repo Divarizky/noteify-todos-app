@@ -2,6 +2,7 @@ package com.divarizky.noteify.view
 
 import android.graphics.Paint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.divarizky.noteify.model.Note
@@ -19,6 +20,9 @@ class NoteAdapter(
 
         fun bind(note: Note) {
             binding.tvTitle.text = note.title
+
+            binding.tvDescription.text = note.description
+            binding.tvDescription.visibility = if (note.description.isNullOrEmpty()) View.GONE else View.VISIBLE
 
             // Fungsi untuk efek coret + redup jika completed
             applyStrikeThrough(note.completed)

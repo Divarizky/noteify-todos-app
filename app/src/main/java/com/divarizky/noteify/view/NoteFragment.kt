@@ -12,7 +12,7 @@ import com.divarizky.noteify.model.Note
 
 class NoteFragment(
     private val note: Note?,
-    private val onSave: (String, Boolean) -> Unit
+    private val onSave: (String, String, Boolean) -> Unit
 ) : DialogFragment() {
 
     private var _binding: FragmentNoteBinding? = null
@@ -43,14 +43,16 @@ class NoteFragment(
 
         note?.let {
             binding.etTitle.setText(it.title)
+            binding.etDescription.setText(it.description)
             binding.cbCompleteForm.isChecked = it.completed
         }
 
         binding.btnSave.setOnClickListener {
             val title = binding.etTitle.text.toString().trim()
+            val description = binding.etDescription.text.toString().trim()
             val completed = binding.cbCompleteForm.isChecked
             if (title.isNotEmpty()) {
-                onSave(title, completed)
+                onSave(title, description, completed)
                 dismiss()
             }
         }
