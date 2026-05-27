@@ -34,7 +34,7 @@
             android:gravity="center"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:text="Add"
+            android:text="Tambah"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Tekan Add untuk menambahkan tugas baru"
+            android:text="Tekan Tambah untuk menambahkan tugas baru"
             android:textColor="#CCCCCC"
             android:textSize="13sp" />
     </LinearLayout>

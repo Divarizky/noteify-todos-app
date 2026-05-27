@@ -8,7 +8,7 @@ import androidx.room.Upsert
 @Dao
 interface NoteDao {
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): List<Note>
+    suspend fun getAllNotes(): List<Note>
 
     @Upsert
     suspend fun upsertNotes(note: Note): Long

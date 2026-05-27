@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.divarizky.noteify.data.local.Note
 import com.divarizky.noteify.data.local.NotesDatabase
 import com.divarizky.noteify.data.repositories.NoteRepository
+import com.divarizky.noteify.services.RetrofitClient
 import kotlinx.coroutines.launch
 
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
@@ -23,10 +24,11 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-    // Inisialisasi NotesDatabase
+    // Inisialisasi Room + ApiService
     init {
         val noteDao = NotesDatabase.getDatabase(application).noteDao()
-        repository = NoteRepository(noteDao)
+        val apiService = RetrofitClient.instance
+        repository = NoteRepository(noteDao, apiService)
     }
 
     fun loadNotes() {
