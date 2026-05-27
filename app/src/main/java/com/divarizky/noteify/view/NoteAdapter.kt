@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.divarizky.noteify.model.Note
+import com.divarizky.noteify.data.local.Note
 import com.divarizky.noteify.databinding.NoteBinding
 
 class NoteAdapter(
@@ -22,7 +22,7 @@ class NoteAdapter(
             binding.tvTitle.text = note.title
 
             binding.tvDescription.text = note.description
-            binding.tvDescription.visibility = if (note.description.isNullOrEmpty()) View.GONE else View.VISIBLE
+            binding.tvDescription.visibility = if (note.description.isEmpty()) View.GONE else View.VISIBLE
 
             // Fungsi untuk efek coret + redup jika completed
             applyStrikeThrough(note.completed)
@@ -64,8 +64,10 @@ class NoteAdapter(
 
     override fun getItemCount() = notes.size
 
-    fun updateData(newNotes: List<Note>) {
-        notes = newNotes
+    fun updateData(newNotes: List<Note>?) {
+        if (newNotes != null) {
+            notes = newNotes
+        }
         notifyDataSetChanged()
     }
 }

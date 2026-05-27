@@ -1,16 +1,18 @@
 package com.divarizky.noteify.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.divarizky.noteify.model.Note
-import com.divarizky.noteify.repositories.NoteRepository
+import com.divarizky.noteify.data.local.Note
+import com.divarizky.noteify.data.local.NotesDatabase
+import com.divarizky.noteify.data.repositories.NoteRepository
 import kotlinx.coroutines.launch
 
-class NoteViewModel : ViewModel() {
+class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val repository = NoteRepository()
+    private val repository: NoteRepository
 
     private val _notes = MutableLiveData<List<Note>>()
     val notes: LiveData<List<Note>> = _notes
@@ -21,12 +23,17 @@ class NoteViewModel : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    // Inisialisasi NotesDatabase
+    init {
+        val noteDao = NotesDatabase.getDatabase(application).noteDao()
+        repository = NoteRepository(noteDao)
+    }
+
     fun loadNotes() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val result = repository.fetchNotes()
-                _notes.value = result
+                _notes.value = repository.fetchNotes()
             } catch (e: Exception) {
                 _errorMessage.value = e.message ?: "Gagal memuat data"
             } finally {
@@ -36,28 +43,31 @@ class NoteViewModel : ViewModel() {
     }
 
     fun addNote(title: String, description: String, completed: Boolean) {
-        val currentList = _notes.value?.toMutableList() ?: mutableListOf()
-        val newId = (currentList.maxOfOrNull { it.id } ?: 0) + 1
-        currentList.add(0, Note(userId = 1, id = newId, title = title, description = description, completed = completed))
-        _notes.value = currentList
+        viewModelScope.launch {
+            val newNote = Note(title = title, description = description, completed = completed)
+            repository.saveNotes(newNote)
+            loadNotes()
+        }
     }
 
     fun updateNote(updatedNote: Note) {
-        val currentList = _notes.value?.toMutableList() ?: return
-        val index = currentList.indexOfFirst { it.id == updatedNote.id }
-        if (index != -1) {
-            currentList[index] = updatedNote
-            _notes.value = currentList
+        viewModelScope.launch {
+            repository.saveNotes(updatedNote)
+            loadNotes()
         }
     }
 
     fun deleteNote(note: Note) {
-        val currentList = _notes.value?.toMutableList() ?: return
-        currentList.remove(note)
-        _notes.value = currentList
+        viewModelScope.launch {
+            repository.deleteNotes(note)
+            loadNotes()
+        }
     }
 
     fun toggleComplete(note: Note, isChecked: Boolean) {
-        updateNote(note.copy(completed = isChecked))
+        viewModelScope.launch {
+            repository.saveNotes(note.copy(completed = isChecked))
+            loadNotes()
+        }
     }
 }

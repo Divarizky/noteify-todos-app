@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.divarizky.noteify.databinding.ActivityMainBinding
-import com.divarizky.noteify.model.Note
 import com.divarizky.noteify.viewmodel.NoteViewModel
+import com.divarizky.noteify.data.local.Note
 
 class MainActivity : AppCompatActivity() {
 

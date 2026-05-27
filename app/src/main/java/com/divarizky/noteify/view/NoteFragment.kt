@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.divarizky.noteify.databinding.FragmentNoteBinding
-import com.divarizky.noteify.model.Note
+import com.divarizky.noteify.data.local.Note
 
 class NoteFragment(
     private val note: Note?,
